@@ -5,7 +5,6 @@ from telegram.ext import (
     CommandHandler,
     MessageHandler,
     Filters,
-    CallbackQueryHandler,
 )
 
 from .state import State
@@ -37,8 +36,6 @@ def main():
     updater = Updater(settings.TOKEN)
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler('start', Bot.start))
-    dispatcher.add_handler(CallbackQueryHandler(Bot.read_is_registered))
-    dispatcher.add_handler(CallbackQueryHandler(Bot.read_bizfunc))
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, Bot.receive_message))
 
     # Start the Bot
