@@ -5,6 +5,7 @@ from telegram.ext import (
     CommandHandler,
     MessageHandler,
     Filters,
+    CallbackQueryHandler,
 )
 
 from .state import State
@@ -23,13 +24,10 @@ def main():
         State.STEP_READ_PASSWORD: Bot.read_password,
         State.STEP_AUTH_USER: Bot.auth_user,
         State.STEP_SUGGEST_BIZFUNCS: Bot.suggest_bizfuncs,
-        State.STEP_ASK_BIZFUNC: Bot.ask_bizfunc,
         State.STEP_READ_BIZFUNC: Bot.read_bizfunc,
         State.STEP_SUGGEST_QUESTIONS: Bot.suggest_questions,
-        State.STEP_ASK_QUESTION: Bot.ask_question,
         State.STEP_READ_QUESTION: Bot.read_question,
         State.STEP_SUGGEST_OPTIONS: Bot.suggest_options,
-        State.STEP_ASK_OPTION: Bot.ask_option,
         State.STEP_READ_OPTION: Bot.read_option,
         State.STEP_WRITE_ANSWER: Bot.write_answer,
         State.STEP_ASK_IS_CONTINUE: Bot.ask_is_continue,
@@ -39,6 +37,8 @@ def main():
     updater = Updater(settings.TOKEN)
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler('start', Bot.start))
+    dispatcher.add_handler(CallbackQueryHandler(Bot.read_is_registered))
+    dispatcher.add_handler(CallbackQueryHandler(Bot.read_bizfunc))
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, Bot.receive_message))
 
     # Start the Bot
